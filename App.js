@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+import React from 'react';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import RecipesGenerator from './components/RecipesGenerator';
+import RecipeInfo from './components/RecipeInfo';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
+const HomeScreen = ({navigation}) => (
+  <ApplicationProvider {...eva} theme={eva.dark}>
+    <RecipesGenerator ingredients={"chicken,rice"} navigation = {navigation}></RecipesGenerator>
+  </ApplicationProvider>
+);
+
+const IngredientsScreen = ({navigation,route}) => (
+  <ApplicationProvider {...eva} theme={eva.dark}>
+    <RecipeInfo id = {route.params.id}></RecipeInfo>
+  </ApplicationProvider>
+);
+
+export default () => (
+  <NavigationContainer>
+    <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen
+          name="Ingredients"
+          component={IngredientsScreen}
+          options={{ title: 'Ingredients' }}
+        />
+    </Stack.Navigator>
+  </NavigationContainer>
+  
+);
