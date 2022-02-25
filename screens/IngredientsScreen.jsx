@@ -1,7 +1,11 @@
 import React from 'react'
-
-const IngredientsScreen = ({navigation,route}) => (
-      <RecipeInfo id = {route.params.id}></RecipeInfo>
-  );
+import { useNavigation } from '@react-navigation/native';
+import RecipeInfo from '../components/RecipeInfo';
+const IngredientsScreen = ({route}) =>{
+    const navigation = useNavigation();
+    return (
+        <RecipeInfo id = {route.params.id}></RecipeInfo>
+    );
+} 
 
 export default IngredientsScreen

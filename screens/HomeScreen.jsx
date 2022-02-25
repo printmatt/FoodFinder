@@ -1,9 +1,14 @@
 import React from 'react'
+import { Text } from '@ui-kitten/components'
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
-  return (
-    <div>HomeScreen</div>
-  )
+
+    const navigation = useNavigation();
+
+    return (
+        <Text></Text>
+    )
 }
 
 export default HomeScreen
