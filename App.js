@@ -13,18 +13,6 @@ import MainScreen from './screens/MainScreen';
 
 const Stack = createNativeStackNavigator();
 
-const HomeScreen = ({ navigation }) => (
-  <ApplicationProvider {...eva} theme={eva.dark}>
-    <RecipesGenerator ingredients={"chicken,rice"} navigation={navigation}></RecipesGenerator>
-  </ApplicationProvider>
-);
-
-const IngredientsScreen = ({ navigation, route }) => (
-  <ApplicationProvider {...eva} theme={eva.dark}>
-    <RecipeInfo id={route.params.id}></RecipeInfo>
-  </ApplicationProvider>
-);
-
 export default () => (
   <NavigationContainer>
     <IconRegistry icons={EvaIconsPack} />

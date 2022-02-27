@@ -30,14 +30,6 @@ const RecipesGenerator = ({ingredients, navigation}) => {
     );
   
 
-    const renderItemHeader = (headerProps, item) => (
-        <View {...headerProps}>
-          <Text category='h6'>
-            {`${item.title}`}
-          </Text>
-        </View>
-      );
-
     const renderItem = ({item}) => (
         <ListItem
             title={`${item.title}`}

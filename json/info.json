@@ -1,0 +1,29 @@
+{
+    "name": "Matthew Vang",
+    "email": "manhhungvang@gmail.com",
+    "restrictions": [],
+    "cusine": "italian",
+    "diet": "paleo",
+    "nutrients": {
+        "protein": "20",
+        "carbs": "60"
+    },
+    "intolerances": [
+        "dairy",
+        "peanut"
+    ],
+    "ingredients": [
+        {
+            "title": "chicken",
+            "selected": false
+        },
+        {
+            "title": "broccoli",
+            "selected": false
+        },
+        {
+            "title": "garlic",
+            "selected": false
+        }
+    ]
+}
