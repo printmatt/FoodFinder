@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 
 
 const FavoriteIngredients = ({ favorites, onDelete, onSelect, onGenerate }) => {
+
     const TrashIcon = (props) => (
         <Icon {...props} name='trash-2' />
     );

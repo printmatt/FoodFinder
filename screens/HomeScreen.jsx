@@ -39,6 +39,7 @@ const HomeScreen = () => {
   }
 
   const generateRecipes = () => {
+    
     var items = userInfo.ingredients.filter(function(item) {
       if (item['selected']) {
         return item['title'];
@@ -47,7 +48,16 @@ const HomeScreen = () => {
     var names = items.map(function(item) {
       return item['title'];
     });
-    navigation.navigate('Recipes', { ingredients: `${names.toString()}` })
+
+    if(items.length===0){
+      alert("Please select an ingredient!")
+      return;
+    }
+
+    navigation.navigate('Recipes', {ingredients: `${names.toString()}`,
+                                    intolerances: `${userInfo.intolerances.toString()}`,
+                                    diet: `${userInfo.diet.toString()}`,
+                                    cuisine: `${userInfo.cuisine.toString()}` })
   }
 
   return (

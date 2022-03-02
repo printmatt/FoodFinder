@@ -27,8 +27,7 @@ const RecipesGenerator = ({ info }) => {
             <Layout style={styles.userHeader}>
                 <Layout style={styles.userTag}>
                     <Avatar source={require('../assets/cute.jpg')} size='large' shape='rounded' />
-                    <Layout style={{ marginLeft: 20,backgroundColor: "#192734"
- }}>
+                    <Layout style={{ marginLeft: 20,backgroundColor: "#192734"}}>
                         <Text style={styles.title}>{name}</Text>
                         <Text style={styles.caption}>{email}</Text>
                     </Layout>
@@ -37,7 +36,7 @@ const RecipesGenerator = ({ info }) => {
             <Layout style={styles.userInfoSection}>
                 <Layout style={styles.row}>
                     <Text category='label' style={styles.label}>MAIN DIET:</Text>
-                    <Text style={styles.text}>{diet}</Text>
+                    <Text style={styles.text}>{diet!="" ? diet : "No Preference"}</Text>
                 </Layout>
                 <Layout style={styles.row}>
                     <Text category='label' style={styles.label}>INTOLERANCES:</Text>

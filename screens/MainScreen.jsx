@@ -6,6 +6,7 @@ import RecipesScreen from './RecipesScreen';
 import InfoScreen from './InfoScreen';
 import HomeScreen from './HomeScreen';
 import IngredientsScreen from './IngredientsScreen';
+import RandomRecipesScreen from './RandomRecipesScreen'
 import { StyleSheet } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -25,11 +26,7 @@ const BottomTabBar = ({ navigation, state }) => (
             fill='#fff'
             name='home'
         />} />
-        <BottomNavigationTab title='Profile' icon={<Icon
-            style={styles.icon}
-            fill='#fff'
-            name='person'
-        />} />
+
         <BottomNavigationTab title='Recipes' icon={<Icon
             style={styles.icon}
             fill='#fff'
@@ -44,7 +41,6 @@ const MainScreen = () => {
         <SafeAreaProvider>
             <Navigator screenOptions={{ headerShown: false }} tabBar={props => <BottomTabBar {...props} />}>
                 <Screen name='HomeStack' component={HomeStackScreen} />
-                <Screen name='InfoStack' component={InfoStackScreen} />
                 <Screen name='RecipesStack' component={RecipesStackScreen} />
             </Navigator>
         </SafeAreaProvider>
@@ -61,6 +57,11 @@ const HomeStackScreen = () => {
                 component={HomeScreen}
                 options={{ title: 'Home', headerShown: false }}
             />
+            <Screen name='InfoStack'
+                    component={InfoScreen}
+                    options={{ title: 'Info', headerShown: false }}
+                    />
+
             <Screen
                 name="Recipes"
                 component={RecipesScreen}
@@ -71,30 +72,19 @@ const HomeStackScreen = () => {
                 component={IngredientsScreen}
                 options={{ title: 'Ingredients', headerShown: false  }}
             />
+
         </RecipesSearchStack.Navigator>
     )
 }
 
-const InfoStackScreen = () => {
-    return (
-        <RecipesSearchStack.Navigator>
-            <Screen
-                name="Info"
-                component={InfoScreen}
-                options={{ title: 'Info', headerShown: false }}
-            />
-            
-        </RecipesSearchStack.Navigator>
-    )
-}
 
 const RecipesStackScreen = () => {
     return (
         <RecipesSearchStack.Navigator>
             <Screen
-                name="Recipes"
-                component={RecipesScreen}
-                options={{ title: 'Recipes', headerShown: false }}
+                name="RandomRecipes"
+                component={RandomRecipesScreen}
+                options={{ title: 'RandomRecipes', headerShown: false }}
             />
             <Screen
                 name="Ingredients"
