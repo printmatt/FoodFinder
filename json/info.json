@@ -1,9 +1,9 @@
 {
     "name": "Matt Vang",
-    "email": "manhhungvang@gmail.com",
+    "email": "mvang@gmail.com",
     "restrictions": [],
     "cuisine": "italian,vietnamese,japanese,korean",
-    "diet": "",
+    "diet": "paleo",
     "nutrients": {
         "protein": "20",
         "carbs": "60"

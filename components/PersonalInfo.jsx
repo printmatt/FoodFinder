@@ -4,7 +4,11 @@ import { Button, Icon } from '@ui-kitten/components';
 import { StyleSheet, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const RecipesGenerator = ({ info }) => {
+const EditIcon = (props) => (
+    <Icon {...props} name='edit-2' style={styles.icon} fill='white' />
+);
+
+const PersonalInfo = ({ info, onEdit }) => {
     const navigation = useNavigation();
 
     const [name, setName] = useState("")
@@ -25,35 +29,42 @@ const RecipesGenerator = ({ info }) => {
     return (
         <Layout >
             <Layout style={styles.userHeader}>
+
                 <Layout style={styles.userTag}>
-                    <Avatar source={require('../assets/cute.jpg')} size='large' shape='rounded' />
-                    <Layout style={{ marginLeft: 20,backgroundColor: "#192734"}}>
-                        <Text style={styles.title}>{name}</Text>
-                        <Text style={styles.caption}>{email}</Text>
+                    <Layout style={{ flexDirection: 'row', backgroundColor: "#192734", justifyContent: 'space-between'}}>
+                        <Avatar source={require('../assets/cute.jpg')} size='large' shape='rounded' />
+                        <Layout style={{ marginLeft: 12, backgroundColor: "#192734" }}>
+                            <Text style={styles.title}>{name}</Text>
+                            <Text style={styles.caption}>{email}</Text>
+                        </Layout>
+                            <Button
+                                size={'tiny'}
+                                style={styles.button}
+                                accessoryLeft={EditIcon}
+                                onPress={onEdit}>
+                                EDIT
+                            </Button>
                     </Layout>
-                </Layout>
-            </Layout>
-            <Layout style={styles.userInfoSection}>
-                <Layout style={styles.row}>
-                    <Text category='label' style={styles.label}>MAIN DIET:</Text>
-                    <Text style={styles.text}>{diet!="" ? diet : "No Preference"}</Text>
-                </Layout>
-                <Layout style={styles.row}>
-                    <Text category='label' style={styles.label}>INTOLERANCES:</Text>
-                    <Text style={styles.text}>{intolerances.join(', ')}</Text>
+                    <Layout style={styles.row}>
+                            <Text category='label' style={styles.label}>MAIN DIET:</Text>
+                            <Text style={styles.text}>{diet != "" ? diet : "No Preference"}</Text>
+                        </Layout>
+                        <Layout style={styles.row}>
+                            <Text category='label' style={styles.label}>INTOLERANCES:</Text>
+                            <Text style={styles.text}>{intolerances.join(', ')}</Text>
+
+                        </Layout>
 
                 </Layout>
-                {/* <Layout style={styles.row}>
-                    <Text category='label' style={styles.label}>DESIRED NUTRIENTS:</Text>
-                </Layout> */}
             </Layout>
+
         </Layout>
 
     );
 
 };
 
-export default RecipesGenerator;
+export default PersonalInfo;
 
 const styles = StyleSheet.create({
     container: {
@@ -63,12 +74,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         marginTop: 50,
         marginBottom: 25,
-        
+
     },
 
-    userTag: { 
-        flexDirection: 'row', 
-        marginTop: 15, 
+    userTag: {
+        marginTop: 15,
         borderColor: "white",
         borderRadius: 10,
         borderWidth: 2,
@@ -82,7 +92,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom:10,
+        marginBottom: 10,
     },
     label: {
         fontSize: 16,
@@ -90,7 +100,8 @@ const styles = StyleSheet.create({
         //marginLeft: 20,
     },
     text: {
-        marginLeft: 10
+        marginLeft: 10,
+        maxWidth: 150,
     },
     caption: {
         fontSize: 14,
@@ -99,7 +110,8 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginBottom: 15,
+        marginTop: 15,
+        backgroundColor: "#192734"
     },
     infoBoxWrapper: {
         borderBottomColor: '#dddddd',
@@ -127,5 +139,14 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16,
         lineHeight: 26,
+    },
+    icon: {
+        width: 20,
+        height: 20,
+        marginLeft:5
+    },
+    button: {
+        width: 60,
+        height: 10,
     },
 });

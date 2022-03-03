@@ -38,6 +38,15 @@ const HomeScreen = () => {
     setUserInfo(temp)
   }
 
+  //edit profile screen
+  const editProfile = () => {
+    navigation.navigate('Info',{info: userInfo, editInfo: updateProfile})
+  }
+
+  //update profile
+  const updateProfile = (newInfo) => {
+    setUserInfo(newInfo)
+  }
   const generateRecipes = () => {
     
     var items = userInfo.ingredients.filter(function(item) {
@@ -62,7 +71,7 @@ const HomeScreen = () => {
 
   return (
     <Layout style={styles.container}>
-      <PersonalInfo info={userInfo} />
+      <PersonalInfo info={userInfo} onEdit = {editProfile}/>
       <Layout style={styles.userInfoSection}>
         <FavoriteIngredients 
           favorites={userInfo.ingredients}
@@ -90,6 +99,7 @@ const styles = StyleSheet.create({
   userInfoSection: {
     paddingHorizontal: 30,
     marginBottom: 25,
+    maxHeight: 360,
   },
   title: {
     fontSize: 24,

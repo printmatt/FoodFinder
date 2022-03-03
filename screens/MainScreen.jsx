@@ -57,7 +57,7 @@ const HomeStackScreen = () => {
                 component={HomeScreen}
                 options={{ title: 'Home', headerShown: false }}
             />
-            <Screen name='InfoStack'
+            <Screen name='Info'
                     component={InfoScreen}
                     options={{ title: 'Info', headerShown: false }}
                     />

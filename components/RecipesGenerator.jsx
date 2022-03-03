@@ -28,7 +28,7 @@ const RecipesGenerator = ({ ingredients, intolerances, diet, navigation }) => {
   useEffect(() => {
 
     fetch(
-      `https://api.spoonacular.com/recipes/complexSearch/?apiKey=676e7283912040069e51ebc4850220cf&includeIngredients=${ingredients}&intolerances=${intolerances}&diet=${""}&number=4`
+      `https://api.spoonacular.com/recipes/complexSearch/?apiKey=676e7283912040069e51ebc4850220cf&includeIngredients=${ingredients}&intolerances=${intolerances}&diet=${diet==""?"":diet}&number=4`
     )
       .then(response => response.json())
       .then(data => {
