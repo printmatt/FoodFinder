@@ -10,7 +10,7 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDxIfDqcjS8kBZg4wQuYE75wspyIcq9R-w",
+  apiKey: "XXXXXXXXXXXXXXXXXXXXXXXXX",
   authDomain: "mealfinder-e12a3.firebaseapp.com",
   projectId: "mealfinder-e12a3",
   storageBucket: "mealfinder-e12a3.appspot.com",
