@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaLayout, StyleSheet } from 'react-native';
+import { SafeAreaLayout, StyleSheet, TouchableOpacity } from 'react-native';
 import { Layout, Text, Icon, Avatar, Divider } from '@ui-kitten/components';
 import FavoriteIngredients from '../components/FavoriteIngredients';
 import PersonalInfo from '../components/PersonalInfo';
 import AddIngredient from '../components/AddIngredient';
 import { useNavigation } from '@react-navigation/native';
+import { auth } from '../firebase'
+
 // import Share from 'react-native-share';
 
 // import files from '../json/filesBase64';
@@ -13,6 +15,14 @@ const HomeScreen = () => {
   const [userInfo, setUserInfo] = useState(require('../json/info.json'))
   const navigation = useNavigation();
 
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigation.replace("LoginSignup")
+      })
+      .catch(error => alert(error.message))
+  }
   //add ingredient
   const addIngredient = (title) => {
     const temp = {...userInfo}
@@ -81,6 +91,13 @@ const HomeScreen = () => {
          ></FavoriteIngredients>
         <AddIngredient onAdd={addIngredient}/>
       </Layout>
+      <Text>Email: {auth.currentUser?.email}</Text>
+      <TouchableOpacity
+        onPress={handleSignOut}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>Sign out</Text>
+      </TouchableOpacity>
     </Layout>
   );
 };

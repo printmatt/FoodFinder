@@ -2,6 +2,7 @@ import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from '@ui-kitten/components';
+import LoginScreen from './LoginScreen';
 import RecipesScreen from './RecipesScreen';
 import InfoScreen from './InfoScreen';
 import HomeScreen from './HomeScreen';
@@ -15,7 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const Tab = createMaterialBottomTabNavigator();
-const RecipesSearchStack = createStackNavigator();
+const StackNavigator = createStackNavigator();
 
 const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation
@@ -39,28 +40,48 @@ const MainScreen = () => {
 
     return (
         <SafeAreaProvider>
-            <Navigator screenOptions={{ headerShown: false }} tabBar={props => <BottomTabBar {...props} />}>
-                <Screen name='HomeStack' component={HomeStackScreen} />
-                <Screen name='RecipesStack' component={RecipesStackScreen} />
-            </Navigator>
+            <StackNavigator.Navigator>
+                <Screen
+                    name="LoginSignup"
+                    component={LoginScreen}
+                    options={{ title: 'Login', headerShown: false }}
+                />
+                <Screen
+                    name="MainApp"
+                    component={MainAppScreen}
+                    options={{ title: 'MainApp', headerShown: false }}
+                />
+            </StackNavigator.Navigator>
+
         </SafeAreaProvider>
 
 
     )
 }
 
+const MainAppScreen = () => {
+
+    return (
+        <Navigator screenOptions={{ headerShown: false }} tabBar={props => <BottomTabBar {...props} />}>
+            <Screen name='HomeStack' component={HomeStackScreen} />
+            <Screen name='RecipesStack' component={RecipesStackScreen} />
+        </Navigator>
+
+
+    )
+}
 const HomeStackScreen = () => {
     return (
-        <RecipesSearchStack.Navigator>
+        <StackNavigator.Navigator>
             <Screen
                 name="Home"
                 component={HomeScreen}
                 options={{ title: 'Home', headerShown: false }}
             />
             <Screen name='Info'
-                    component={InfoScreen}
-                    options={{ title: 'Info', headerShown: false }}
-                    />
+                component={InfoScreen}
+                options={{ title: 'Info', headerShown: false }}
+            />
 
             <Screen
                 name="Recipes"
@@ -70,17 +91,17 @@ const HomeStackScreen = () => {
             <Screen
                 name="Ingredients"
                 component={IngredientsScreen}
-                options={{ title: 'Ingredients', headerShown: false  }}
+                options={{ title: 'Ingredients', headerShown: false }}
             />
 
-        </RecipesSearchStack.Navigator>
+        </StackNavigator.Navigator>
     )
 }
 
 
 const RecipesStackScreen = () => {
     return (
-        <RecipesSearchStack.Navigator>
+        <StackNavigator.Navigator>
             <Screen
                 name="RandomRecipes"
                 component={RandomRecipesScreen}
@@ -89,9 +110,9 @@ const RecipesStackScreen = () => {
             <Screen
                 name="Ingredients"
                 component={IngredientsScreen}
-                options={{ title: 'Ingredients', headerShown: false  }}
+                options={{ title: 'Ingredients', headerShown: false }}
             />
-        </RecipesSearchStack.Navigator>
+        </StackNavigator.Navigator>
     )
 }
 
