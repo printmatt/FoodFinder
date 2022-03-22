@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaLayout, StyleSheet, TouchableOpacity } from 'react-native';
-import { Layout, Text, Icon, Avatar, Divider } from '@ui-kitten/components';
+import { Layout, Text, Icon, Avatar, Divider, Button } from '@ui-kitten/components';
 import FavoriteIngredients from '../components/FavoriteIngredients';
 import PersonalInfo from '../components/PersonalInfo';
 import AddIngredient from '../components/AddIngredient';
@@ -90,14 +90,9 @@ const HomeScreen = () => {
           onGenerate = {generateRecipes}
          ></FavoriteIngredients>
         <AddIngredient onAdd={addIngredient}/>
+        <Button style={{marginTop:40}} status={"warning"} onPress={handleSignOut}>Sign Out</Button>
       </Layout>
-      <Text>Email: {auth.currentUser?.email}</Text>
-      <TouchableOpacity
-        onPress={handleSignOut}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
+
     </Layout>
   );
 };
@@ -116,7 +111,8 @@ const styles = StyleSheet.create({
   userInfoSection: {
     paddingHorizontal: 30,
     marginBottom: 25,
-    maxHeight: 360,
+    height: 350,
+    maxHeight: 350
   },
   title: {
     fontSize: 24,

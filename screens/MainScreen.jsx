@@ -3,6 +3,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from '@ui-kitten/components';
 import LoginScreen from './LoginScreen';
+import SignUpScreen from './SignUpScreen';
 import RecipesScreen from './RecipesScreen';
 import InfoScreen from './InfoScreen';
 import HomeScreen from './HomeScreen';
@@ -41,10 +42,15 @@ const MainScreen = () => {
     return (
         <SafeAreaProvider>
             <StackNavigator.Navigator>
-                <Screen
+            <Screen
                     name="LoginSignup"
                     component={LoginScreen}
                     options={{ title: 'Login', headerShown: false }}
+                />
+                <Screen
+                    name="SignUp"
+                    component={SignUpScreen}
+                    options={{ title: 'SignUp', headerShown: false }}
                 />
                 <Screen
                     name="MainApp"

@@ -52,7 +52,7 @@ export default FavoriteIngredients
 
 const styles = StyleSheet.create({
     container: {
-        maxHeight: 390,
+        maxHeight: 300,
 
     },
     generate:{
