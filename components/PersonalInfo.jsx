@@ -51,7 +51,7 @@ const PersonalInfo = ({ info, onEdit }) => {
                         </Layout>
                         <Layout style={styles.row}>
                             <Text category='label' style={styles.label}>INTOLERANCES:</Text>
-                            <Text style={styles.text}>{intolerances.join(', ')}</Text>
+                            <Text style={styles.text}>{intolerances?intolerances.join(', '):''}</Text>
 
                         </Layout>
 

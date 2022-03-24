@@ -10,9 +10,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import MainScreen from './screens/MainScreen';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Stack = createNativeStackNavigator();
-
 export default () => (
   <NavigationContainer>
     <IconRegistry icons={EvaIconsPack} />

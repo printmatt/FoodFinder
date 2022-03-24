@@ -6,92 +6,107 @@ import PersonalInfo from '../components/PersonalInfo';
 import AddIngredient from '../components/AddIngredient';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase'
+import { getDatabase, ref, child, set } from "firebase/database";
 
 // import Share from 'react-native-share';
 
 // import files from '../json/filesBase64';
 
-const HomeScreen = () => {
-  const [userInfo, setUserInfo] = useState(require('../json/info.json'))
+const HomeScreen = ({ route }) => {
+  const [userInfo, setUserInfo] = useState(route.params.userInfo)
+  userInfo.intolerances = userInfo.intolerances?userInfo.intolerances:[]
+
+  const [userId, setUserId] = useState(route.params.userId)
   const navigation = useNavigation();
+  const db = getDatabase();
 
   const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
-        navigation.replace("LoginSignup")
+        navigation.replace("Login")
       })
       .catch(error => alert(error.message))
   }
   //add ingredient
   const addIngredient = (title) => {
-    const temp = {...userInfo}
-    temp.ingredients.push({title:title,selected:false})
+    let temp = { ...userInfo }
+    temp.ingredients = temp.ingredients ? temp.ingredients : []
+    temp.ingredients.push({ title: title, selected: false })
     setUserInfo(temp)
+    set(ref(db, 'users/' + userId), temp)
+
   }
 
   //delete ingredient
   const deleteIngredient = (name, id) => {
-    let temp = {...userInfo}
-    temp.ingredients = temp.ingredients.filter((item,index) => {
+    let temp = { ...userInfo }
+    temp.ingredients = temp.ingredients.filter((item, index) => {
       return index != id
     })
-    setUserInfo(temp)  
+    setUserInfo(temp)
+    set(ref(db, 'users/' + userId), temp)
   }
 
   //toggle reminder boolean
-  const toggleSelected = (id) =>{
-    let temp = {...userInfo}
-    temp.ingredients = temp.ingredients.map((item,index) => index === id ? {...item,selected:!item.selected} : item)
+  const toggleSelected = (id) => {
+    let temp = { ...userInfo }
+    temp.ingredients = temp.ingredients.map((item, index) => index === id ? { ...item, selected: !item.selected } : item)
     console.log(temp.ingredients)
     console.log(id)
     setUserInfo(temp)
+
   }
 
   //edit profile screen
   const editProfile = () => {
-    navigation.navigate('Info',{info: userInfo, editInfo: updateProfile})
+    navigation.navigate('Info', { info: userInfo, editInfo: updateProfile })
   }
 
   //update profile
   const updateProfile = (newInfo) => {
     setUserInfo(newInfo)
+    set(ref(db, 'users/' + userId), newInfo)
+
   }
   const generateRecipes = () => {
-    
-    var items = userInfo.ingredients.filter(function(item) {
+
+    var items = userInfo.ingredients.filter(function (item) {
       if (item['selected']) {
         return item['title'];
       }
     })
-    var names = items.map(function(item) {
+    var names = items.map(function (item) {
       return item['title'];
     });
 
-    if(items.length===0){
+    if (items.length === 0) {
       alert("Please select an ingredient!")
       return;
     }
 
-    navigation.navigate('Recipes', {ingredients: `${names.toString()}`,
-                                    intolerances: `${userInfo.intolerances.toString()}`,
-                                    diet: `${userInfo.diet.toString()}`,
-                                    cuisine: `${userInfo.cuisine.toString()}` })
+    navigation.navigate('Recipes', {
+      ingredients: `${names.toString()}`,
+      intolerances: `${userInfo.intolerances.toString()}`,
+      diet: `${userInfo.diet.toString()}`,
+      cuisine: `${userInfo.cuisine.toString()}`
+    })
   }
 
   return (
     <Layout style={styles.container}>
-      <PersonalInfo info={userInfo} onEdit = {editProfile}/>
+
+      <PersonalInfo info={userInfo} onEdit={editProfile} />
       <Layout style={styles.userInfoSection}>
-        <FavoriteIngredients 
+        <FavoriteIngredients
           favorites={userInfo.ingredients}
-          onDelete = {deleteIngredient}
-          onSelect = {toggleSelected}
-          onGenerate = {generateRecipes}
-         ></FavoriteIngredients>
-        <AddIngredient onAdd={addIngredient}/>
-        <Button style={{marginTop:40}} status={"warning"} onPress={handleSignOut}>Sign Out</Button>
+          onDelete={deleteIngredient}
+          onSelect={toggleSelected}
+          onGenerate={generateRecipes}
+        ></FavoriteIngredients>
+        <AddIngredient onAdd={addIngredient} />
       </Layout>
+      <Button style={{ marginTop: 40 }} status={"warning"} onPress={handleSignOut}>Sign Out</Button>
 
     </Layout>
   );
@@ -111,8 +126,8 @@ const styles = StyleSheet.create({
   userInfoSection: {
     paddingHorizontal: 30,
     marginBottom: 25,
-    height: 350,
-    maxHeight: 350
+    height: 400,
+    maxHeight: 400
   },
   title: {
     fontSize: 24,

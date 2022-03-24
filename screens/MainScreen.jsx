@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from '@ui-kitten/components';
@@ -14,6 +14,9 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Layout, Text } from '@ui-kitten/components';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { getDatabase, ref, child, get } from "firebase/database";
+import LoadingScreen from './LoadingScreen';
+
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -42,8 +45,8 @@ const MainScreen = () => {
     return (
         <SafeAreaProvider>
             <StackNavigator.Navigator>
-            <Screen
-                    name="LoginSignup"
+                <Screen
+                    name="Login"
                     component={LoginScreen}
                     options={{ title: 'Login', headerShown: false }}
                 />
@@ -65,24 +68,46 @@ const MainScreen = () => {
     )
 }
 
-const MainAppScreen = () => {
-
+const MainAppScreen = ({ route }) => {
+    const [userId, setuserId] = useState(route.params.userId)
+    const [userInfo, setUserInfo] = useState(null)
+    const dbRef = ref(getDatabase());
+    
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    useEffect(() => {
+        delay(2000).then(()=>get(child(dbRef, `users/${userId}`))).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+                setUserInfo(snapshot.val());
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }, [userId])
+    
+    if(!userInfo) return (<LoadingScreen></LoadingScreen>)
     return (
         <Navigator screenOptions={{ headerShown: false }} tabBar={props => <BottomTabBar {...props} />}>
-            <Screen name='HomeStack' component={HomeStackScreen} />
+            <Screen name='HomeStack' component={HomeStackScreen} initialParams={{userId : userId, userInfo: userInfo}} />
             <Screen name='RecipesStack' component={RecipesStackScreen} />
         </Navigator>
-
-
     )
 }
-const HomeStackScreen = () => {
+
+const HomeStackScreen = ({route}) => {
+    console.log(route.params.userId)
+    console.log(route.params.userInfo)
     return (
         <StackNavigator.Navigator>
             <Screen
                 name="Home"
                 component={HomeScreen}
                 options={{ title: 'Home', headerShown: false }}
+                initialParams = {route.params}
             />
             <Screen name='Info'
                 component={InfoScreen}

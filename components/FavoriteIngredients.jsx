@@ -1,10 +1,13 @@
 import { Layout, Button, Icon, List, ListItem } from '@ui-kitten/components'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet } from 'react-native';
 
 
 const FavoriteIngredients = ({ favorites, onDelete, onSelect, onGenerate }) => {
-
+    useEffect(() => {
+        
+    }, [favorites])
+    
     const TrashIcon = (props) => (
         <Icon {...props} name='trash-2' />
     );
