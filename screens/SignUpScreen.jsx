@@ -149,7 +149,7 @@ const SignUpScreen = () => {
             .catch(error => alert(error.message))
     }
 
-    const writeUserData = (userId, name, email, restrictions, cuisine, diet, intolerances, ingredients) => {
+    const writeUserData = (userId, name, email, restrictions, cuisine, diet, intolerances) => {
         const db = getDatabase();
         set(ref(db, '/users/' + userId), {
             name: name,
@@ -158,7 +158,8 @@ const SignUpScreen = () => {
             cuisine: cuisine,
             diet: diet,
             intolerances: intolerances,
-            ingredients: []
+            ingredients: [],
+            recipes: [],
         });
     }
     return (

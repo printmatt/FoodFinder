@@ -71,9 +71,6 @@ const RecipeInfo = ({ id }) => {
               renderItem={renderItem}
             />
           </Layout>
-
-
-          <Divider></Divider>
           <Text category='h4' style={styles.header}>INSTRUCTIONS: </Text>
           <Layout style={styles.userTag}>
 

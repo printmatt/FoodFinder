@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaLayout, StyleSheet, TouchableOpacity } from 'react-native';
-import { Layout, Text, Icon, Avatar, Divider, Button } from '@ui-kitten/components';
+import { Layout, Text, Icon, Avatar, Divider, Button, ButtonGroup } from '@ui-kitten/components';
 import FavoriteIngredients from '../components/FavoriteIngredients';
 import PersonalInfo from '../components/PersonalInfo';
 import AddIngredient from '../components/AddIngredient';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase'
-import { getDatabase, ref, child, set } from "firebase/database";
+import { getDatabase, ref, child, set, get } from "firebase/database";
 
-// import Share from 'react-native-share';
+const LogOutIcon = (props) => (
+  <Icon {...props} name='log-out' />
+);
 
-// import files from '../json/filesBase64';
+const GroceryIcon = (props) => (
+  <Icon {...props} name='shopping-cart' />
+);
+
+const SavedIcon = (props) => (
+  <Icon {...props} name='bookmark' />
+);
 
 const HomeScreen = ({ route }) => {
   const [userInfo, setUserInfo] = useState(route.params.userInfo)
-  userInfo.intolerances = userInfo.intolerances?userInfo.intolerances:[]
+  userInfo.intolerances = userInfo.intolerances ? userInfo.intolerances : []
 
   const [userId, setUserId] = useState(route.params.userId)
   const navigation = useNavigation();
@@ -28,13 +36,49 @@ const HomeScreen = ({ route }) => {
       })
       .catch(error => alert(error.message))
   }
+
+  const viewSavedRecipes = async () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+          let temp = snapshot.val()
+          if(!temp.recipes) {
+            alert("No saved recipes found")
+            return;
+          }
+          navigation.navigate('SavedRecipes',{recipes: temp.recipes});
+
+      } else {
+          console.log("No data available");
+      }
+  })
+  }
+
+  const viewGrocery = async () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+          let temp = snapshot.val()
+          if(!temp.grocery) {
+            alert("No saved ingredients found")
+            return;
+          }
+          navigation.navigate('Grocery',{grocery: temp.grocery});
+
+      } else {
+          console.log("No data available");
+      }
+  })
+  }
+
+
   //add ingredient
   const addIngredient = (title) => {
     let temp = { ...userInfo }
     temp.ingredients = temp.ingredients ? temp.ingredients : []
     temp.ingredients.push({ title: title, selected: false })
     setUserInfo(temp)
-    set(ref(db, 'users/' + userId), temp)
+    set(ref(db, 'users/' + userId + '/ingredients/'), temp.ingredients)
 
   }
 
@@ -45,7 +89,7 @@ const HomeScreen = ({ route }) => {
       return index != id
     })
     setUserInfo(temp)
-    set(ref(db, 'users/' + userId), temp)
+    set(ref(db, 'users/' + userId + '/ingredients/'), temp.ingredients)
   }
 
   //toggle reminder boolean
@@ -106,7 +150,13 @@ const HomeScreen = ({ route }) => {
         ></FavoriteIngredients>
         <AddIngredient onAdd={addIngredient} />
       </Layout>
-      <Button style={{ marginTop: 40 }} status={"warning"} onPress={handleSignOut}>Sign Out</Button>
+      <ButtonGroup style={{ justifyContent:"center", marginTop: 70 }} appearance='filled' size={"medium"} status={"basic"}>
+        <Button onPress={viewSavedRecipes} accessoryRight={SavedIcon}>Recipes</Button>
+        <Button onPress={viewGrocery} accessoryRight={GroceryIcon}>Grocery</Button>
+        <Button onPress={handleSignOut} accessoryRight={LogOutIcon}>Logout</Button>
+
+      </ButtonGroup>
+      
 
     </Layout>
   );
@@ -173,5 +223,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     lineHeight: 26,
+  },
+  controlContainer: {
+    borderRadius: 4,
+    marginTop: 40,
+    padding: 6,
+    justifyContent: 'center',
+    backgroundColor: '#3366FF',
   },
 });

@@ -4,17 +4,22 @@ import RecipeInfo from '../components/RecipeInfo';
 import { Layout, Text, List, ListItem, Divider, Card, TopNavigationAction, TopNavigation } from '@ui-kitten/components';
 import { Button, Icon } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
+import AddRecipe from '../components/AddRecipe';
 const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
 );
 
 
+
 const IngredientsScreen = ({ route }) => {
     const navigation = useNavigation();
-
+    
     const navigateBack = () => {
         navigation.goBack();
     };
+    const addRecipe = ()=>{
+        AddRecipe(route.params.id,route.params.title);
+    }
 
     const BackAction = () => (
         <TopNavigationAction style={styles.header} icon={BackIcon} onPress={navigateBack} />
@@ -23,7 +28,7 @@ const IngredientsScreen = ({ route }) => {
     return (
         <Layout style={styles.container}>
             <TopNavigation title='Ingredients and Instructions' alignment='center' accessoryLeft={BackAction} />
-
+            <Button onPress={addRecipe}>Add Recipe</Button>
             <RecipeInfo id={route.params.id}></RecipeInfo>
         </Layout>
     );

@@ -52,7 +52,7 @@ const RecipesGenerator = ({ ingredients, intolerances, diet, navigation }) => {
     <Button
       size='tiny'
       onPress={() =>
-        navigation.navigate('Ingredients', { id: `${item.id}` })
+        navigation.navigate('Ingredients', { id: `${item.id}`, title: `${item.title}` })
       }
     >SEE MORE</Button>
   );

@@ -6,6 +6,9 @@ import { Button, Icon } from '@ui-kitten/components';
 import { Input } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
+import { auth } from '../firebase'
+import { getDatabase, ref, get, child } from "firebase/database";
+
 
 const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
@@ -99,14 +102,32 @@ const InfoScreen = ({ route }) => {
     };
 
     const update = () => {
-        let temp = { ...route.params.info }
-        temp.name = name
-        temp.email = email
-        temp.diet = dietValue == 'none' ? "" : dietValue
-        temp.intolerances = groupIntoleranceValues
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${auth.currentUser.uid}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                let temp = snapshot.val()
+                temp.name = name
+                temp.email = email
+                temp.diet = dietValue == 'none' ? "" : dietValue
+                temp.intolerances = groupIntoleranceValues
 
-        route.params.editInfo(temp);
-        navigation.navigate('Home');
+                route.params.editInfo(temp);
+                navigation.navigate('Home');
+
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+        // let temp = { ...route.params.info }
+        // temp.name = name
+        // temp.email = email
+        // temp.diet = dietValue == 'none' ? "" : dietValue
+        // temp.intolerances = groupIntoleranceValues
+
+        // route.params.editInfo(temp);
+        // navigation.navigate('Home');
     };
 
     const BackAction = () => (
@@ -120,9 +141,9 @@ const InfoScreen = ({ route }) => {
 
             <Layout style={styles.row}>
                 {/* // Name selection */}
-                <Text style ={styles.title} category={'h6'}>NAME:</Text>
+                <Text style={styles.title} category={'h6'}>NAME:</Text>
                 <Input
-                style={styles.selectbox}
+                    style={styles.selectbox}
                     value={name}
                     onChangeText={newName => setName(newName)}
                 />
@@ -130,9 +151,9 @@ const InfoScreen = ({ route }) => {
 
             <Layout style={styles.row}>
                 {/* // Email selection */}
-                <Text style ={styles.title} category={'h6'}>EMAIL:</Text>
+                <Text style={styles.title} category={'h6'}>EMAIL:</Text>
                 <Input
-                style={styles.selectbox}
+                    style={styles.selectbox}
                     value={email}
                     onChangeText={newEmail => setEmail(newEmail)}
                 />
@@ -140,7 +161,7 @@ const InfoScreen = ({ route }) => {
 
             <Layout style={styles.row}>
                 {/* // Diet Selection */}
-                <Text style ={styles.title} category={'h6'}>DIET:</Text>
+                <Text style={styles.title} category={'h6'}>DIET:</Text>
                 <Select
                     style={styles.selectbox}
                     placeholder='Default'
@@ -156,7 +177,7 @@ const InfoScreen = ({ route }) => {
 
             <Layout style={styles.row}>
                 {/* // Intolerance selections */}
-                <Text style ={styles.title} category={'h6'}>INTOLERANCES:</Text>
+                <Text style={styles.title} category={'h6'}>INTOLERANCES:</Text>
                 <Select
                     style={styles.selectbox}
                     multiSelect={true}
@@ -168,7 +189,7 @@ const InfoScreen = ({ route }) => {
             </Layout>
 
 
-            <Button style={{marginTop:25}} onPress={update}>Save</Button>
+            <Button style={{ marginTop: 25 }} onPress={update}>Save</Button>
         </Layout>
     );
 }
@@ -180,11 +201,11 @@ const styles = StyleSheet.create({
     header: {
         marginTop: 75,
     },
-    title:{
-        marginRight:20,
+    title: {
+        marginRight: 20,
         marginTop: 5,
     },
-    selectbox:{
+    selectbox: {
         width: 175
     },
     container: {

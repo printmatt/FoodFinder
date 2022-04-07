@@ -9,6 +9,8 @@ import InfoScreen from './InfoScreen';
 import HomeScreen from './HomeScreen';
 import IngredientsScreen from './IngredientsScreen';
 import RandomRecipesScreen from './RandomRecipesScreen'
+import SavedRecipesScreen from './SavedRecipes';
+import GroceryScreen from './GroceryScreen';
 import { StyleSheet } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,7 +18,6 @@ import { BottomNavigation, BottomNavigationTab, Layout, Text } from '@ui-kitten/
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getDatabase, ref, child, get } from "firebase/database";
 import LoadingScreen from './LoadingScreen';
-
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -29,13 +30,13 @@ const BottomTabBar = ({ navigation, state }) => (
         <BottomNavigationTab title='Home' icon={<Icon
             style={styles.icon}
             fill='#fff'
-            name='home'
+            name='home-outline'
         />} />
 
-        <BottomNavigationTab title='Recipes' icon={<Icon
+        <BottomNavigationTab title='Random' icon={<Icon
             style={styles.icon}
             fill='#fff'
-            name='bulb'
+            name='bulb-outline'
         />} />
     </BottomNavigation>
 );
@@ -113,6 +114,12 @@ const HomeStackScreen = ({route}) => {
                 component={InfoScreen}
                 options={{ title: 'Info', headerShown: false }}
             />
+            <Screen name='SavedRecipes'
+                component={SavedRecipesScreen}
+                options={{ title: 'SavedRecipes', headerShown: false }}
+            />
+            <Screen name="Grocery" component={GroceryScreen}
+                options={{ title: 'Grocery', headerShown: false }} />
 
             <Screen
                 name="Recipes"
@@ -143,9 +150,12 @@ const RecipesStackScreen = () => {
                 component={IngredientsScreen}
                 options={{ title: 'Ingredients', headerShown: false }}
             />
+
         </StackNavigator.Navigator>
     )
 }
+
+
 
 
 export default MainScreen
