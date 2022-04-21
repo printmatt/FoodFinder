@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase'
 import { getDatabase, ref, set, get, child } from "firebase/database";
 
-const AddRecipe = (id, title) => {
+const DeleteRecipe = (id, title) => {
     const dbRef = ref(getDatabase());
     const db = getDatabase();
 
@@ -11,14 +11,14 @@ const AddRecipe = (id, title) => {
             var userInfo = snapshot.val()
             userInfo.recipes = userInfo.recipes ? userInfo.recipes : {};
 
-            //early exit if already added
-            if (userInfo.recipes.hasOwnProperty(id)) return userInfo;
+            //early exit if already deleteed
+            if (!userInfo.recipes.hasOwnProperty(id)) return userInfo;
             //else
-            userInfo.recipes[id] = title
+            delete userInfo.recipes[id]
 
-            // add ingredients to grocery list
+            // delete ingredients to grocery list
             userInfo.grocery = userInfo.grocery ? userInfo.grocery : {};
-            userInfo.grocery = await addIngredients(userInfo.grocery, id).then(newIngredients => { return newIngredients });
+            userInfo.grocery = await deleteIngredients(userInfo.grocery, id).then(newIngredients => { return newIngredients });
 
             return userInfo;
 
@@ -38,7 +38,7 @@ const AddRecipe = (id, title) => {
 }
 
 
-const addIngredients = async (currentIngredients, newRecipeID) => {
+const deleteIngredients = async (currentIngredients, newRecipeID) => {
     await fetch(
         `https://api.spoonacular.com/recipes/${newRecipeID}/information/?apiKey=676e7283912040069e51ebc4850220cf`)
         .then(response => response.json())
@@ -53,25 +53,18 @@ const addIngredients = async (currentIngredients, newRecipeID) => {
 
             for (const newItem in newIngredients) {
                 if (currentIngredients.hasOwnProperty(newItem)) {
-                    let unitToAdd = newIngredients[newItem].unit.toString()
-                    let amountToAdd = Number(newIngredients[newItem].amount)
+                    let unitToDelete = newIngredients[newItem].unit.toString()
+                    let amountToDelete = Number(newIngredients[newItem].amount)
 
-                    if (currentIngredients[newItem].hasOwnProperty(unitToAdd)) {
-                        console.log(unitToAdd)
-                        console.log(amountToAdd)
-                        let newAmount = currentIngredients[newItem][unitToAdd] + amountToAdd;
-                        console.log(newAmount)
-                        currentIngredients[newItem][unitToAdd] = newAmount;
-                    }
-                    else{
-                        currentIngredients[newItem][unitToAdd] = amountToAdd;
+                    if (currentIngredients[newItem].hasOwnProperty(unitToDelete)) {
+                        let newAmount = currentIngredients[newItem][unitToDelete] - amountToDelete;
+                        currentIngredients[newItem][unitToDelete] = newAmount;
                     }
 
-                }
-                else {
-                    let unit = newIngredients[newItem].unit
-                    let amount = newIngredients[newItem].amount;
-                    currentIngredients[newItem] = {[unit] : amount};
+                    if(currentIngredients[newItem][unitToDelete] <= 0){
+                        delete currentIngredients[newItem][unitToDelete];
+                    }
+
                 }
             }
             console.log("check 2")
@@ -86,4 +79,4 @@ const addIngredients = async (currentIngredients, newRecipeID) => {
 }
 
 
-export default AddRecipe
+export default DeleteRecipe

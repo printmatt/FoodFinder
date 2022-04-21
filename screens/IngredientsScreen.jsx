@@ -28,8 +28,8 @@ const IngredientsScreen = ({ route }) => {
     return (
         <Layout style={styles.container}>
             <TopNavigation title='Ingredients and Instructions' alignment='center' accessoryLeft={BackAction} />
-            <Button onPress={addRecipe}>Add Recipe</Button>
             <RecipeInfo id={route.params.id}></RecipeInfo>
+            <Button style={styles.button} onPress={addRecipe}>Add Recipe</Button>
         </Layout>
     );
 }
@@ -48,8 +48,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         paddingVertical: 4,
     },
-    item: {
-        marginVertical: 4,
+    button: {
+        marginVertical: 25,
+        marginHorizontal: 10
     },
     a: {
         fontWeight: '300',

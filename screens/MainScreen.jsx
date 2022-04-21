@@ -80,7 +80,6 @@ const MainAppScreen = ({ route }) => {
     useEffect(() => {
         delay(2000).then(()=>get(child(dbRef, `users/${userId}`))).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log(snapshot.val());
                 setUserInfo(snapshot.val());
             } else {
                 console.log("No data available");
@@ -100,8 +99,6 @@ const MainAppScreen = ({ route }) => {
 }
 
 const HomeStackScreen = ({route}) => {
-    console.log(route.params.userId)
-    console.log(route.params.userInfo)
     return (
         <StackNavigator.Navigator>
             <Screen

@@ -169,7 +169,6 @@ const InfoScreen = ({ route }) => {
                     selectedIndex={selectedIndex}
                     onSelect={index => {
                         setSelectedIndex(index)
-                        console.log(index)
                     }}>
                     {data.map(renderOption)}
                 </Select>

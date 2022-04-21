@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import RecipesGenerator from '../components/RecipesGenerator';
-import { Layout, TopNavigationAction, TopNavigation, List, ListItem } from '@ui-kitten/components';
+import DeleteRecipe from '../components/DeleteRecipe';
+import { Layout, TopNavigationAction, TopNavigation, List, ListItem, Divider } from '@ui-kitten/components';
 import { Button, Icon, Text } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 
@@ -9,14 +10,25 @@ const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
 );
 
+const DeleteIcon = (props) => (
+    <Icon {...props} name='trash' />
+);
+
+
+
 const SavedRecipesScreen = ({ route }) => {
-    const savedRecipes = route.params.recipes;
-    console.log("Saved")
+    const [savedRecipes, setSavedRecipes] = useState(route.params.recipes);
+    useEffect(() => {
+      
+    }, [savedRecipes])
+    
     const navigation = useNavigation();
 
     const navigateBack = () => {
         navigation.goBack();
     };
+
+
 
     const BackAction = () => (
         <TopNavigationAction style={styles.header} icon={BackIcon} onPress={navigateBack} />
@@ -31,12 +43,29 @@ const SavedRecipesScreen = ({ route }) => {
         >SEE MORE</Button>
     );
 
+    const renderDelete = (props, item) => (
+        <Button
+            size='tiny'
+            accessoryLeft={DeleteIcon}
+            status={'danger'}
+            onPress={() => {
+                    DeleteRecipe(item,savedRecipes[item])
+                    var newRecipes = {...savedRecipes}
+                    delete newRecipes[item]
+                    console.log(newRecipes)
+                    setSavedRecipes(newRecipes)
+                }
+            }
+        ></Button>
+    );
+
 
     const renderItem = ({ item }) => (
         <ListItem
             title={`${savedRecipes[item]}`}
             description={`${item}`}
             accessoryRight={props => renderItemAccessory(props, item)}
+            accessoryLeft={props => renderDelete(props, item)}
         >
         </ListItem>
 
@@ -51,6 +80,8 @@ const SavedRecipesScreen = ({ route }) => {
                 contentContainerStyle={styles.contentContainer}
                 data={Object.keys(savedRecipes)}
                 renderItem={renderItem}
+                ItemSeparatorComponent={Divider}
+
             />
 
         </Layout>
