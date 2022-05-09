@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
 import { Layout, Text, Icon, Avatar, Divider, Input, Button } from '@ui-kitten/components';
 import { auth } from '../firebase'
 
@@ -18,7 +18,7 @@ const LoginScreen = () => {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
-                navigation.replace("MainApp", {userId: user.uid})
+                navigation.replace("MainApp", { userId: user.uid })
             }
         })
 
@@ -48,19 +48,15 @@ const LoginScreen = () => {
             })
             .catch(error => alert(error.message))
     }
-    const renderCaption = () => {
-        return (
-          <View style={styles.captionContainer}>
-            {AlertIcon(styles.captionIcon)}
-            <Text style={styles.captionText}>Should contain at least 8 symbols</Text>
-          </View>
-        )
-      }
 
     return (
         <Layout
             style={styles.container}
             behavior="padding">
+            <Image
+                style={styles.tinyLogo}
+                source={require('../assets/logo.png')}
+            />
             <Layout style={styles.inputContainer}>
                 <Input
                     placeholder="username@email.com"
@@ -108,6 +104,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    tinyLogo: {
+        width: 170,
+        height: 170,
+        marginBottom: 25,
+        borderRadius: 10
+
+      },
     inputContainer: {
         width: '80%'
     },
